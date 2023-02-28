@@ -1,5 +1,4 @@
 <?php
-    // phpinfo();
     $vista = null;
 
     include('Assets/config/configDB.php');
@@ -7,24 +6,27 @@
       
     try{
         $pixels = $client->getPixels();
-       
-        $color = $pixels[2];
-        $pixels[1][2] = $color;
             
         echo '<table>';
-        foreach($pixels as $row){
-            echo '<tr>';
-                foreach($row as $pixel){
-                    echo "<td style='background-color: $row[2] '";
-                }
-            echo '</tr>';
+        foreach($pixels as $pixel){
+            if($pixel['y']== 0){
+                echo '<tr>';
+            }
+            echo '<td><a style="background-color: '.$pixel[2].'; height: 2rem; width: 2rem; display: block;" 
+            data-coords="'.$pixel['x'].','.$pixel['y'].'"></a></td>';
+            if($pixel['y'] == 31 ){
+                echo '</tr>';
+            }
         }
         echo '</table>';
+        echo '<form class="color-picker" style="display: none;">
+        <input type="color" name="color" value="<?= $pixel[2] ?>">
+        <button type="submit">Cambiar</button>
+        </form>';
     }catch (Exception $e){
         echo $e;
     }
-     
     
 
-    print $pixels;
+    // print $pixels;
 ?>
